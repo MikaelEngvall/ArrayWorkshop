@@ -1,7 +1,5 @@
 package se.lexicon;
 
-import java.util.Arrays;
-
 /**
  *
  */
@@ -18,36 +16,42 @@ public class NameRepository {
         for (String word : myArray) {
             System.out.print(word);
         }
-        //find("Erik Svensson");
+        find("Erik Svensson");
         add("Mikael Engvall");
         // Print the combined array
-        for (String word : newArray) {
-            System.out.print(word);
-        }
-    }
+
+
+        System.out.println(add("Erik Svensson"));
+        System.out.println(add("Mikael Engvall"));
+}
 
     public static String find(final String fullname) {
         String[] n = fullname.split(" ");
-        if (n[0].equalsIgnoreCase("Erik") && n[1].equalsIgnoreCase("Svensson")) {
-            System.out.println(fullname);
-            return fullname;
-        } else {
-            System.out.println("\nnull");
-            return null;
+        for (int i = 0; i <= 3; i++) {
+            if (n[0].equalsIgnoreCase("Erik") && n[1].equalsIgnoreCase("Svensson")) return fullname;
+            else
+                return null;
         }
+        return fullname;
     }
+    public static boolean add(final String fullname) {
 
-    public static String[] add(final String fullname) {
-        // Calculate the length of the new array
-        int newLength = 3;
-        newLength += 3;
-        int i = 0;
-        // Create a new array with the combined length
-        String[] newArray = new String[newLength];
-        for (i, i <= newLength, i++){
-
+        if (find(fullname) != null) {
+            return false;
         }
-            return newArray;
+
+        String[][] nameBase = {
+                {"Erik", " ", "Svensson"},
+                {null, null, null},
+        };
+        String firstName = fullname.substring(0, fullname.indexOf(" "));
+        String blank = " ";
+        String lastName = fullname.substring(fullname.indexOf(" ") + 1);
+        nameBase[1][0] = firstName;
+        nameBase[1][1] = blank;
+        nameBase[1][2] = lastName;
+
+        return true;
     }
 
 }
