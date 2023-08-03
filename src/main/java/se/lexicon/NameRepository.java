@@ -12,11 +12,6 @@ public class NameRepository {
         System.out.println(find(fullName2));
         System.out.println(add(fullName1));
         System.out.println(add(fullName2));
-        System.out.println(myArray[0]);
-        System.out.println(myArray[1]);
-        System.out.println(myArray[2]);
-        System.out.println(myArray[3]);
-        System.out.println(myArray[4]);
     }
     public static String find(final String fullName) {
         // Split the input full name into parts using whitespace as the delimiter
@@ -42,11 +37,11 @@ public class NameRepository {
 
         // If both first name and last name are found, return the full name
         if (firstNameFound && lastNameFound) {
-            return fullName + " exists";
+            return fullName;
         }
 
         // Otherwise, return null
-        return fullName + " does not exist";
+        return null;
     }
     public static boolean add(final String fullName) {
         // Split the input full name into parts using whitespace as the delimiter
@@ -81,9 +76,8 @@ public class NameRepository {
         for (int i = 0; i < myArray.length; i++) {
             newArray[i] = myArray[i];
         }
-
-        for (int i = myArray.length; i < newLength; i++) {
-            newArray[i] = nameParts[i - myArray.length];
+        for (int i = myArray.length; i < newLength; i++) {  //Here I must put a " " between the
+            newArray[i] = nameParts[i - myArray.length];    //firstname and lastname
         }
 
         myArray = newArray;
