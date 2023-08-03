@@ -1,151 +1,176 @@
 package se.lexicon;
 
-import java.util.Scanner;
-
 public class NameRepository {
-    // This is the array, 10 rows x 3 columns
-    public static String[][] names = new String[10][3];  //We just set it to 3 columns and 10 rows
-    public static int currentIndex = 0; // Counter to prompt message if too many names are added
 
-    // hardcoded values for the array
+    // Array containing the components of the full name
+    private static String[] myArray = {"Erik", " ", "Svensson", "Per", " ", "Svensson"};
+
     public static void main(String[] args) {
-        names[0][0] = "Erik";
-        names[0][1] = " ";
-        names[0][2] = "Svensson";
+        String fullName1 = "Erik Svensson";
+        String fullName2 = "John Doe";
+        String[] fullNameSplit = fullName1.split(" ");
+        String firstName = fullNameSplit[0];
+        String lastName = fullNameSplit[1];
+        System.out.println(firstName);
+        System.out.println(find(fullName1));
+        System.out.println(find(fullName2));
+        System.out.println(add(fullName1));
+//        System.out.println(add(fullName2));
 
-//        // The method returns the name provided as an argument if it's in the array, otherwise it returns null
-//        System.out.println("Method: find");
-//        System.out.println(find("Erik Svensson"));
-
-//        // The user will have to enter a name to add
-//        System.out.println("Method: 'add'");
-//        add(add());
-
-//        // There's no need for a parameter for findByFirstName since it will return an array of all the firstnames with no regard to the argument
-//        System.out.println("Method 2: findByFirstName");
-//        for (String name : findByFirstName("argument")) {
-//            System.out.println(name);
-//        }
-
-//        // There's no need for a parameter for findByLastName since it will return an array of all the lastnames with no regard to the argument
-//        System.out.println("findByLastName");
-//        for (String name : findByLastName("argument")) {
-//            System.out.println(name);
-//        }
-
-//        // The names are hardcoded, Anders Loren will swap place with Erik Svensson
-//        if (update("Erik Svensson", "Anders Loren")) {
-//            printArray();
-//        }
-
-        // ["Erik", " ", "Svensson"] will get replaced with [null, null, null]
-        if (names[0][0]!=null) printArray();
-        System.out.println("--------------");
-        if (remove("Erik Svensson")) {
-            if (names[0][0]!=null) printArray();
-        }
+        String[] s = findByFirstName(firstName);
+        for (String element : s) System.out.println(element);
+        System.out.println("----------------");
+        String[] s2 = findByLastName(lastName);
+        for (String element : s2) System.out.println(element);
+        System.out.println("----------------");
+        for (String string : myArray) System.out.println(string);
+        System.out.println(update(fullName1, fullName2));
     }
-    public static boolean remove(final String fullName) {
-        if (find(fullName) != fullName) {
+    public static boolean update(final String original, final String updatedName) {
+        String[] originalNameParts = original.split(" ");
+        String[] updatedNameParts = updatedName.split(" ");
+
+        // Ensure both original and updated names contain both a first name and a last name
+        if (originalNameParts.length != 2 || updatedNameParts.length != 2) {
             return false;
-        } else {
-            String[] nameSplit = split(fullName);
-            for (String[] name : names) {
-                if (name[0].equalsIgnoreCase(nameSplit[0]) && name[2].equalsIgnoreCase(nameSplit[2])) {
-                    name[0] = null;
-                    name[1] = null;
-                    name[2] = null;
-                    break;
-                }
+        }
+
+        // Find the indices of the original first name and last name in myArray
+        int firstNameIndex = -1;
+        int lastNameIndex = -1;
+        for (int i = 0; i < myArray.length; i++) {
+            if (myArray[i].equalsIgnoreCase(originalNameParts[0])) {
+                firstNameIndex = i;
             }
-            return true;
+            if (myArray[i].equalsIgnoreCase(originalNameParts[1])) {
+                lastNameIndex = i;
+            }
         }
-    }
-    private static boolean update(final String original, final String updatedName) {
-        if (find(updatedName) != null) {
+
+        // Return false if the original first name or last name is not found in myArray
+        if (firstNameIndex == -1 || lastNameIndex == -1) {
             return false;
         }
-        if (find(original) != null) {
-            String[] splitOriginal = split(original);
-            for (String[] name : names) {
-                if (name[0].equalsIgnoreCase(splitOriginal[0]) && name[2].equalsIgnoreCase(splitOriginal[2])) {
-                    String[] splitUpdate = split(updatedName);
-                    name[0] = splitUpdate[0];
-                    name[2] = splitUpdate[2];
-                    break;
+
+        // Check if the updated first name and last name already exist in myArray
+        for (int i = 0; i < myArray.length - 1; i++) {
+            if (i != firstNameIndex && i != lastNameIndex) {
+                if (myArray[i].equalsIgnoreCase(updatedNameParts[0]) && myArray[i + 1].equalsIgnoreCase(updatedNameParts[1])) {
+                    return false; // An existing first name and last name matching the updatedName already exists
                 }
             }
         }
+
+        // Update the first name and last name with the new values
+        myArray[firstNameIndex] = updatedNameParts[0];
+        myArray[lastNameIndex] = updatedNameParts[1];
+
         return true;
     }
     public static String[] findByLastName(final String lastName) {
-        String[] lastnames = new String[10];
-        for (int i = 0; i < names.length; i++) {
-            if (names[i][2] != null) {
-                lastnames[i] = names[i][2];
+        int k = 0;
+        for (String component : myArray) {  // Checking and counting occurrences of the string
+            if (lastName.equalsIgnoreCase(component)) {
+                k++;
             }
         }
-        return lastnames;
+
+        String[] result = new String[k];    // Setting array's length according to occurrences
+        k = 0;
+        for (String component : myArray) {
+            if (lastName.equalsIgnoreCase(component)) {
+                result[k] = component;
+                k++;
+            }
+        }
+
+        return result;
     }
     public static String[] findByFirstName(final String firstName) {
-        String[] forenames = new String[10];
-        for (int i = 0; i < names.length; i++) {
-            if (names[i][0] != null) {
-                forenames[i] = names[i][0];
+        int k = 0;
+        for (String component : myArray) {  //Checking and counting occurencies of the string
+            if (firstName.equalsIgnoreCase(component)) {
+                k++;
             }
         }
-        return forenames;
+        String[] result = new String[k];    //Setting array's length according to occurencies
+        k = 0;
+        for (String component : myArray) {
+            if (firstName.equalsIgnoreCase(component)) {
+                result[k] = component;
+                k++;
+            }
+        }
+        return result;
     }
+
+
     public static String find(final String fullName) {
-        String[] namesSplit = split(fullName);
-        for (String[] name : names) {
-            if (name[0] == null) {
-                break;
-            } else if (name[0].equalsIgnoreCase(namesSplit[0]) && name[2].equalsIgnoreCase(namesSplit[2])) {
-                return fullName;
+        // Split the input full name into parts using whitespace as the delimiter
+        String[] nameParts = fullName.split(" ");
+
+        // Check if both first name and last name are present in myArray
+        boolean firstNameFound = false;
+        boolean lastNameFound = false;
+
+        for (String namePart : nameParts) {
+            for (String component : myArray) {
+                if (namePart.equals(component)) {
+                    if (component.equals(" ")) {
+                        continue; // Ignore the space component
+                    } else if (!firstNameFound) {
+                        firstNameFound = true;
+                    } else {
+                        lastNameFound = true;
+                    }
+                }
             }
         }
+
+        // If both first name and last name are found, return the full name
+        if (firstNameFound && lastNameFound) {
+            return fullName;
+        }
+
+        // Otherwise, return null
         return null;
     }
-    public static String add() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Skriv in ett namn (Förnamn Efternamn): ");
-        return scanner.nextLine();
-    }
+
     public static boolean add(final String fullName) {
-        if (find(fullName) != null) {
+        // Split the input full name into parts using whitespace as the delimiter
+        String[] nameParts = fullName.split(" ");
+
+        // Check if both first name and last name are present in myArray
+        boolean firstNameFound = false;
+        boolean lastNameFound = false;
+
+        for (String namePart : nameParts) {
+            for (String component : myArray) {
+                if (namePart.equals(component)) {
+                    if (component.equals(" ")) {
+                        continue; // Ignore the space component
+                    } else if (!firstNameFound) {
+                        firstNameFound = true;
+                    } else {
+                        lastNameFound = true;
+                    }
+                }
+            }
+        }
+
+        if (firstNameFound && lastNameFound) {
             return false;
-        } else {
-            if (currentIndex < names.length) {
-                currentIndex++;
-                String[] namesSplit = split(fullName);
-                names[currentIndex][0] = namesSplit[0];
-                names[currentIndex][1] = namesSplit[1];
-                names[currentIndex][2] = namesSplit[2];
-            } else {
-                System.out.println("Array is full!");
-            }
         }
-        printArray();
+
+        // If not found, add each part of the full name to the array
+        int newLength = myArray.length + nameParts.length;
+        String[] newArray = new String[newLength];
+
+        System.arraycopy(myArray, 0, newArray, 0, myArray.length);
+        if (newLength - myArray.length >= 0)
+            System.arraycopy(nameParts, myArray.length - myArray.length, newArray, myArray.length, newLength - myArray.length);
+        myArray = newArray;
+
         return true;
-    }
-    public static String[] split(String fullName) {
-        String firstName = fullName.substring(0, fullName.indexOf(" "));
-        String blank = " ";
-        String lastName = fullName.substring(fullName.indexOf(" ") + 1);
-        String[] nameSplit = new String[3];
-        nameSplit[0] = firstName;
-        nameSplit[1] = blank;
-        nameSplit[2] = lastName;
-        return nameSplit;
-    }
-    public static void printArray() {
-        for (int i = 0; i < names.length; i++) {
-            System.out.print("Rad " + (i + 1) + ": ");
-            for (String column : names[i]) {
-                System.out.print(column);
-            }
-            System.out.println();
-        }
     }
 }
