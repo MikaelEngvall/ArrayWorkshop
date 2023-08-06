@@ -3,7 +3,7 @@ package se.lexicon;
 public class NameRepository {
 
     // Array containing the components of the full name
-    private static String[] myArray = {"Erik", " ", "Svensson", "Per", " ", "Svensson"};
+    private static String[] myArray = {"Erik", " ", "Svensson", "Erik", " ", "Olsson", "Erik", " ", "Persson"};
 
     public static void main(String[] args) {
         String fullName1 = "Erik Svensson";
@@ -11,20 +11,71 @@ public class NameRepository {
         String[] fullNameSplit = fullName1.split(" ");
         String firstName = fullNameSplit[0];
         String lastName = fullNameSplit[1];
-        System.out.println(firstName);
-        System.out.println(find(fullName1));
-        System.out.println(find(fullName2));
-        System.out.println(add(fullName1));
+//        System.out.println(find(fullName1));
+//        System.out.println(find(fullName2));
+//        System.out.println(add(fullName1));
 //        System.out.println(add(fullName2));
 
-        String[] s = findByFirstName(firstName);
-        for (String element : s) System.out.println(element);
-        System.out.println("----------------");
-        String[] s2 = findByLastName(lastName);
-        for (String element : s2) System.out.println(element);
-        System.out.println("----------------");
-        for (String string : myArray) System.out.println(string);
-        System.out.println(update(fullName1, fullName2));
+//        String[] s = findByFirstName(firstName);
+//        for (String element : s) System.out.println(element);
+//        System.out.println("----------------");
+//        String[] s2 = findByLastName(lastName);
+//        for (String element : s2) System.out.println(element);
+//        System.out.println("----------------");
+//        for (String string : myArray) System.out.println(string);
+//        System.out.println(update(fullName1, fullName2));
+        System.out.println(remove(fullName1));
+    }
+    public static boolean remove(final String fullName) {
+        // Split the input full name into parts using whitespace as the delimiter
+        String[] nameParts = fullName.split(" ");
+
+        // Check if both first name and last name are present in myArray
+        boolean firstNameFound = false;
+        boolean lastNameFound = false;
+
+        for (String namePart : nameParts) {
+            for (String component : myArray) {
+                if (namePart.equals(component)) {
+                    if (component.equals(" ")) {
+                        continue; // Ignore the space component
+                    } else if (!firstNameFound) {
+                        firstNameFound = true;
+                    } else {
+                        lastNameFound = true;
+                    }
+                }
+            }
+        }
+
+        // Return false if the first name or last name is not found in myArray
+        if (!firstNameFound || !lastNameFound) {
+            return false;
+        }
+
+        // Remove the full name from myArray
+        int newLength = myArray.length - nameParts.length;
+        String[] newArray = new String[newLength];
+        int newIndex = 0;
+
+        for (String component : myArray) {
+            boolean found = false;
+            for (String namePart : nameParts) {
+                if (component.equals(namePart)) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                newArray[newIndex] = component;
+                newIndex++;
+            }
+        }
+
+        myArray = newArray;
+
+        return true;
     }
     public static boolean update(final String original, final String updatedName) {
         String[] originalNameParts = original.split(" ");
@@ -74,7 +125,6 @@ public class NameRepository {
                 k++;
             }
         }
-
         String[] result = new String[k];    // Setting array's length according to occurrences
         k = 0;
         for (String component : myArray) {
@@ -83,17 +133,16 @@ public class NameRepository {
                 k++;
             }
         }
-
         return result;
     }
     public static String[] findByFirstName(final String firstName) {
         int k = 0;
-        for (String component : myArray) {  //Checking and counting occurencies of the string
+        for (String component : myArray) {  //Checking and counting occurrences of the string
             if (firstName.equalsIgnoreCase(component)) {
                 k++;
             }
         }
-        String[] result = new String[k];    //Setting array's length according to occurencies
+        String[] result = new String[k];    //Setting array's length according to occurrences
         k = 0;
         for (String component : myArray) {
             if (firstName.equalsIgnoreCase(component)) {
@@ -103,8 +152,6 @@ public class NameRepository {
         }
         return result;
     }
-
-
     public static String find(final String fullName) {
         // Split the input full name into parts using whitespace as the delimiter
         String[] nameParts = fullName.split(" ");
