@@ -11,20 +11,20 @@ public class NameRepository {
         String[] fullNameSplit = fullName1.split(" ");
         String firstName = fullNameSplit[0];
         String lastName = fullNameSplit[1];
-        System.out.println(find(fullName1));
-        System.out.println(find(fullName2));
+//        System.out.println(find(fullName1));
+//        System.out.println(find(fullName2));
         System.out.println(add(fullName1));
-        System.out.println(add(fullName2));
+//        System.out.println(add(fullName2));
 
-        String[] s = findByFirstName(firstName);
-        for (String element : s) System.out.println(element);
-        System.out.println("----------------");
-        String[] s2 = findByLastName(lastName);
-        for (String element : s2) System.out.println(element);
-        System.out.println("----------------");
-        for (String string : myArray) System.out.println(string);
-        System.out.println(update(fullName1, fullName2));
-        System.out.println(remove(fullName1));
+//        String[] s = findByFirstName(firstName);
+//        for (String element : s) System.out.println(element);
+//        System.out.println("----------------");
+//        String[] s2 = findByLastName(lastName);
+//        for (String element : s2) System.out.println(element);
+//        System.out.println("----------------");
+//        for (String string : myArray) System.out.println(string);
+//        System.out.println(update(fullName1, fullName2));
+//        System.out.println(remove(fullName1));
     }
     public static boolean remove(final String fullName) {
         // Split the input full name into parts using whitespace as the delimiter
